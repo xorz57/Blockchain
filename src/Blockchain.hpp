@@ -12,6 +12,6 @@ public:
     bool is_valid() const;
 
 private:
-    std::vector<block_t> m_blocks;
-    int m_difficulty;
+    std::vector<block_t> blocks;
+    int difficulty;
 };
