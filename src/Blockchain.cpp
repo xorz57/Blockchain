@@ -1,7 +1,7 @@
 #include "Blockchain.hpp"
 
 blockchain_t::blockchain_t(int difficulty) : difficulty(difficulty) {
-    blocks.emplace_back(0, "block#0", "000000000000000000000000000000000000000000000000000000000000000");
+    blocks.emplace_back(0, "Block #0", "000000000000000000000000000000000000000000000000000000000000000");
 }
 
 void blockchain_t::push(block_t &&block) {
