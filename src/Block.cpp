@@ -41,6 +41,8 @@ void block_t::mine(std::uint32_t difficulty) {
     std::mutex mutex;
     std::string str(difficulty, '0');
 
+    auto start_time = std::chrono::steady_clock::now();
+
     auto mining_thread = [&](int thread_id) {
         while (!found) {
             std::unique_lock<std::mutex> lock(mutex);
@@ -64,5 +66,16 @@ void block_t::mine(std::uint32_t difficulty) {
         }
     }
 
-    std::cout << color::basic::green << "mined block #" << index << " " << hash_curr << color::reset << std::endl;
+    auto end_time = std::chrono::steady_clock::now();
+
+    std::chrono::duration<double> elapsed_seconds = end_time - start_time;
+
+    int hours = std::chrono::duration_cast<std::chrono::hours>(elapsed_seconds).count();
+    int minutes = std::chrono::duration_cast<std::chrono::minutes>(elapsed_seconds).count() % 60;
+    int seconds = std::chrono::duration_cast<std::chrono::seconds>(elapsed_seconds).count() % 60;
+
+    std::cout << color::basic::green
+              << "mined block #" << index << " " << hash_curr << " in "
+              << hours << " hours " << minutes << " minutes " << seconds << " seconds"
+              << color::reset << std::endl;
 }
