@@ -1,11 +1,10 @@
 #include "Blockchain.hpp"
 
 blockchain_t::blockchain_t(int difficulty) : difficulty(difficulty) {
-    blocks.emplace_back(0, "Genesis Block", "000000000000000000000000000000000000000000000000000000000000000");
+    blocks.emplace_back(0, "block#0", "000000000000000000000000000000000000000000000000000000000000000");
 }
 
-void blockchain_t::add(const std::string &data) {
-    auto block = block_t(blocks.size(), data, blocks.back().hash_curr);
+void blockchain_t::add_block(block_t &&block) {
     block.mine(difficulty);
     blocks.push_back(block);
 }

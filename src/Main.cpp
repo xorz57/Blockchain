@@ -6,9 +6,9 @@
 int main() {
     blockchain_t blockchain(4);
 
-    blockchain.add("Block 1 Data");
-    blockchain.add("Block 2 Data");
-    blockchain.add("Block 3 Data");
+    blockchain.add_block(block_t(1, "block#1", blockchain.blocks.back().hash_curr));
+    blockchain.add_block(block_t(2, "block#2", blockchain.blocks.back().hash_curr));
+    blockchain.add_block(block_t(3, "block#3", blockchain.blocks.back().hash_curr));
 
     std::cout << "Blockchain is valid: " << blockchain.is_valid() << std::endl;
 

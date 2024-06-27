@@ -4,14 +4,13 @@
 
 #include <vector>
 
-class blockchain_t {
-public:
+struct blockchain_t {
     explicit blockchain_t(int difficulty);
 
-    void add(const std::string &data);
+    void add_block(block_t &&block);
+
     bool is_valid() const;
 
-private:
     std::vector<block_t> blocks;
     int difficulty;
 };
