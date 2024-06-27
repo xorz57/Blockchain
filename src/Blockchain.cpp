@@ -1,6 +1,6 @@
 #include "Blockchain.hpp"
 
-blockchain_t::blockchain_t(int difficulty) : difficulty(difficulty) {
+blockchain_t::blockchain_t(std::uint32_t difficulty) : difficulty(difficulty) {
     blocks.emplace_back(0, "block #0", "000000000000000000000000000000000000000000000000000000000000000");
 }
 
@@ -10,7 +10,7 @@ void blockchain_t::push(block_t &&block) {
 }
 
 bool blockchain_t::is_valid() const {
-    for (size_t i = 1; i < blocks.size(); ++i) {
+    for (std::size_t i = 1; i < blocks.size(); ++i) {
         const block_t &block_curr = blocks[i];
         const block_t &block_prev = blocks[i - 1];
 

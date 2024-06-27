@@ -11,9 +11,9 @@
 #include <thread>
 #include <vector>
 
-block_t::block_t(int index, std::string data, std::string hash_prev) : index(index),
-                                                                       data(data),
-                                                                       hash_prev(hash_prev) {
+block_t::block_t(std::uint32_t index, std::string data, std::string hash_prev) : index(index),
+                                                                                 data(data),
+                                                                                 hash_prev(hash_prev) {
     timestamp = std::to_string(std::time(nullptr));
     hash_curr = hash();
 }
@@ -34,7 +34,7 @@ std::string block_t::hash() const {
     return oss.str();
 }
 
-void block_t::mine(int difficulty) {
+void block_t::mine(std::uint32_t difficulty) {
     std::cout << color::basic::yellow << "mining block #" << index << color::reset << std::endl;
 
     bool found = false;
@@ -54,11 +54,11 @@ void block_t::mine(int difficulty) {
     };
 
     std::vector<std::thread> threads;
-    for (int i = 0; i < std::thread::hardware_concurrency(); ++i) {
+    for (unsigned int i = 0; i < std::thread::hardware_concurrency(); ++i) {
         threads.emplace_back(mining_thread, i);
     }
 
-    for (auto &t : threads) {
+    for (auto &t: threads) {
         if (t.joinable()) {
             t.join();
         }
