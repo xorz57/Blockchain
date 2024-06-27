@@ -6,11 +6,15 @@
 int main() {
     blockchain_t blockchain(4);
 
-    blockchain.add_block(block_t(1, "block#1", blockchain.blocks.back().hash_curr));
-    blockchain.add_block(block_t(2, "block#2", blockchain.blocks.back().hash_curr));
-    blockchain.add_block(block_t(3, "block#3", blockchain.blocks.back().hash_curr));
+    blockchain.push(block_t(blockchain.blocks.back().index + 1, "block#1", blockchain.blocks.back().hash_curr));
+    blockchain.push(block_t(blockchain.blocks.back().index + 1, "block#2", blockchain.blocks.back().hash_curr));
+    blockchain.push(block_t(blockchain.blocks.back().index + 1, "block#3", blockchain.blocks.back().hash_curr));
 
-    std::cout << "Blockchain is valid: " << blockchain.is_valid() << std::endl;
+    if (blockchain.is_valid()) {
+        std::cout << "Blockchain is valid!" << std::endl;
+    } else {
+        std::cout << "Blockchain is invalid!" << std::endl;
+    }
 
     return 0;
 }

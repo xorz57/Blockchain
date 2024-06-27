@@ -4,7 +4,7 @@ blockchain_t::blockchain_t(int difficulty) : difficulty(difficulty) {
     blocks.emplace_back(0, "block#0", "000000000000000000000000000000000000000000000000000000000000000");
 }
 
-void blockchain_t::add_block(block_t &&block) {
+void blockchain_t::push(block_t &&block) {
     block.mine(difficulty);
     blocks.push_back(block);
 }

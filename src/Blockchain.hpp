@@ -7,7 +7,7 @@
 struct blockchain_t {
     explicit blockchain_t(int difficulty);
 
-    void add_block(block_t &&block);
+    void push(block_t &&block);
 
     bool is_valid() const;
 
