@@ -17,16 +17,6 @@ block_t::block_t(std::uint32_t index, std::string data, std::string hash_prev) :
     hash_curr = hash();
 }
 
-std::ostream &operator<<(std::ostream &os, const block_t &block) {
-    os << "index    : " << block.index << "\n"
-       << "timestamp: " << block.timestamp << "\n"
-       << "nonce    : " << block.nonce << "\n"
-       << "data     : " << block.data << "\n"
-       << "hash_prev: " << block.hash_prev << "\n"
-       << "hash_curr: " << block.hash_curr << "\n";
-    return os;
-}
-
 std::string block_t::hash() const {
     std::ostringstream oss;
     oss << timestamp << nonce << index << data << hash_prev;
