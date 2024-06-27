@@ -8,7 +8,7 @@ int main() {
     blockchain_t blockchain(6);
 
     while (blockchain.is_valid()) {
-        blockchain.push(block_t(blockchain.blocks.back().index + 1, "", blockchain.blocks.back().hash_curr));
+        blockchain.push(block_t(blockchain.blocks.back().index + 1, std::vector<std::uint8_t>(), blockchain.blocks.back().hash_curr));
     }
 
     return 0;
