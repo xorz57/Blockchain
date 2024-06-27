@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-
 namespace color {
     constexpr const char *reset = "\033[0m";
 
