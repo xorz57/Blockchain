@@ -2,8 +2,7 @@
 
 #include <string>
 
-struct block_t
-{
+struct block_t {
     block_t(int index, std::string data, std::string hash_prev);
 
     std::string hash() const;
