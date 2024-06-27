@@ -6,7 +6,9 @@
 #include <ctime>
 #include <iomanip>
 #include <iostream>
+#include <mutex>
 #include <sstream>
+#include <thread>
 #include <vector>
 
 block_t::block_t(int index, std::string data, std::string hash_prev) : index(index),
@@ -33,13 +35,34 @@ std::string block_t::hash() const {
 }
 
 void block_t::mine(int difficulty) {
-    std::cout << color::basic::yellow << "Mining block #" << index << color::reset << std::endl;
+    std::cout << color::basic::yellow << "mining block #" << index << color::reset << std::endl;
 
     std::string str(difficulty, '0');
-    do {
-        nonce++;
-        hash_curr = hash();
-    } while (hash_curr.substr(0, difficulty) != str);
+    bool found = false;
+    std::mutex mutex;
 
-    std::cout << color::basic::green << "Mined  block #" << index << " " << hash_curr << color::reset << std::endl;
+    auto mining_thread = [&](int thread_id) {
+        while (!found) {
+            std::unique_lock<std::mutex> lock(mutex);
+            if (found) return;
+            nonce++;
+            hash_curr = hash();
+            if (hash_curr.substr(0, difficulty) == str) {
+                found = true;
+            }
+        }
+    };
+
+    std::vector<std::thread> threads;
+    for (int i = 0; i < std::thread::hardware_concurrency(); ++i) {
+        threads.emplace_back(mining_thread, i);
+    }
+
+    for (auto &t : threads) {
+        if (t.joinable()) {
+            t.join();
+        }
+    }
+
+    std::cout << color::basic::green << "mined block #" << index << " " << hash_curr << color::reset << std::endl;
 }
