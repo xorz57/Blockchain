@@ -1,4 +1,5 @@
 #include "Block.hpp"
+#include "Color.hpp"
 
 #include <openssl/sha.h>
 
@@ -39,7 +40,7 @@ std::string block_t::hash() const {
 }
 
 void block_t::mine(int difficulty) {
-    std::cout << "Mining Block #" << index << std::endl;
+    std::cout << color::basic::yellow << "Mining block #" << index << color::reset << std::endl;
 
     std::string str(difficulty, '0');
     do {
@@ -47,5 +48,5 @@ void block_t::mine(int difficulty) {
         hash_curr = hash();
     } while (hash_curr.substr(0, difficulty) != str);
 
-    std::cout << "Mined  Block #" << index << " " << hash_curr << std::endl;
+    std::cout << color::basic::green << "Mined  block #" << index << " " << hash_curr << color::reset << std::endl;
 }
