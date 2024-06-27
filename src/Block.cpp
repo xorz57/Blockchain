@@ -1,27 +1,14 @@
 #include "Block.hpp"
 #include "Color.hpp"
+#include "Cryptography.hpp"
 
-#include <openssl/sha.h>
-
-#include <array>
 #include <ctime>
 #include <format>
-#include <iomanip>
 #include <iostream>
 #include <mutex>
 #include <sstream>
 #include <thread>
 #include <vector>
-
-std::string sha256(const std::string &input) {
-    std::ostringstream oss;
-    std::array<unsigned char, SHA256_DIGEST_LENGTH> bytes;
-    SHA256(static_cast<const unsigned char *>(static_cast<const void *>(input.c_str())), input.size(), bytes.data());
-    for (const auto &byte: bytes) {
-        oss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(byte);
-    }
-    return oss.str();
-}
 
 block_t::block_t(std::uint32_t index, std::string data, std::string hash_prev) : index(index),
                                                                                  data(data),
@@ -34,7 +21,7 @@ std::string block_t::hash() const {
     std::ostringstream oss;
     oss << timestamp << nonce << index << data << hash_prev;
     std::string buffer = oss.str();
-    return sha256(buffer);
+    return cryptography::sha256(buffer);
 }
 
 void block_t::mine(std::uint32_t difficulty) {

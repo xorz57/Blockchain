@@ -12,6 +12,6 @@ endif()
 
 find_package(OpenSSL REQUIRED)
 
-add_executable(Blockchain src/Main.cpp src/Block.cpp src/Blockchain.cpp)
+add_executable(Blockchain src/Main.cpp src/Block.cpp src/Blockchain.cpp src/Cryptography.cpp)
 target_link_libraries(Blockchain PRIVATE OpenSSL::SSL)
 target_compile_features(Blockchain PRIVATE cxx_std_20)
