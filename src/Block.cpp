@@ -12,14 +12,7 @@
 block_t::block_t(int index, std::string data, std::string hash_prev) : index(index),
                                                                        data(data),
                                                                        hash_prev(hash_prev) {
-    std::ostringstream oss;
-
-    struct tm tm;
-    auto now = std::time(nullptr);
-    localtime_s(&tm, &now);
-    oss << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
-    timestamp = oss.str();
-
+    timestamp = std::to_string(std::time(nullptr));
     hash_curr = hash();
 }
 
