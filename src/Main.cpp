@@ -14,7 +14,7 @@ int main() {
     if (blockchain.is_valid()) {
         std::cout << color::basic::green << "Blockchain is valid!" << color::reset << std::endl;
     } else {
-        std::cout << color::basic::red << "Blockchain is invalid!" << color::reset << std::endl;
+        std::cerr << color::basic::red << "Blockchain is invalid!" << color::reset << std::endl;
     }
 
     return 0;
