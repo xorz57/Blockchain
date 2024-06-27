@@ -37,9 +37,9 @@ std::string block_t::hash() const {
 void block_t::mine(int difficulty) {
     std::cout << color::basic::yellow << "mining block #" << index << color::reset << std::endl;
 
-    std::string str(difficulty, '0');
     bool found = false;
     std::mutex mutex;
+    std::string str(difficulty, '0');
 
     auto mining_thread = [&](int thread_id) {
         while (!found) {
