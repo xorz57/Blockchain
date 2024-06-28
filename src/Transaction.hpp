@@ -10,5 +10,5 @@ struct transaction_t {
 
     std::string sender;
     std::string receiver;
-    float amount = 0.0;
+    float amount = 0.0f;
 };
