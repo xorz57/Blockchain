@@ -13,7 +13,7 @@
 block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> data, std::string hash_prev)
     : index(index),
       data(std::move(data)),
-      hash_prev(hash_prev) {
+      hash_prev(std::move(hash_prev)) {
     timestamp = std::to_string(std::time(nullptr));
     hash_curr = hash();
 }
