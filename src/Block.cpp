@@ -37,13 +37,14 @@ block_t::block_t(std::uint32_t index, std::vector<transaction_t> transactions, s
 
 std::string block_t::hash() const {
     std::ostringstream oss;
-    oss << index << nonce << timestamp << hash_prev;
-    for (const auto &byte: bytes) {
+    oss << index << nonce;
+    for (const std::uint32_t byte: bytes) {
         oss << byte;
     }
-    for (const auto &transaction: transactions) {
+    for (const transaction_t &transaction: transactions) {
         oss << transaction;
     }
+    oss << timestamp << hash_prev;
     std::string buffer = oss.str();
     return cryptography::sha256(buffer);
 }
@@ -91,4 +92,22 @@ void block_t::mine(std::uint32_t difficulty) {
     std::cout << color::basic::green;
     std::cout << std::format("mined block #{} {} in {} hours {} minutes {} seconds", index, hash_curr, hours, minutes, seconds);
     std::cout << color::reset << std::endl;
+}
+
+std::ostream &operator<<(std::ostream &os, const block_t &block) {
+    os << "index: " << block.index << "\n";
+    os << "nonce: " << block.nonce << "\n";
+    os << "bytes: \n";
+    for (const std::uint32_t byte: block.bytes) {
+        os << std::hex << byte << " ";
+    }
+    os << std::dec;
+    os << "transactions: \n";
+    for (const transaction_t &transaction: block.transactions) {
+        os << transaction << "\n";
+    }
+    os << "timestamp: " << block.timestamp << "\n";
+    os << "hash_prev: " << block.hash_prev << "\n";
+    os << "hash_curr: " << block.hash_curr << "\n";
+    return os;
 }

@@ -22,3 +22,5 @@ struct block_t {
     std::string hash_prev;
     std::string hash_curr;
 };
+
+std::ostream &operator<<(std::ostream &os, const block_t &block);
