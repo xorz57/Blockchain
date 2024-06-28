@@ -90,7 +90,7 @@ void block_t::mine(std::uint32_t difficulty) {
     int seconds = std::chrono::duration_cast<std::chrono::seconds>(duration).count() % 60;
 
     std::cout << color::bright::green;
-    std::cout << std::format("mined block #{} {} in {} hours {} minutes {} seconds", index, hash_curr, hours, minutes, seconds);
+    std::cout << std::format("mined block #{} {} in {}h {}m {}s", index, hash_curr, hours, minutes, seconds);
     std::cout << color::reset << std::endl;
 }
 
@@ -102,11 +102,13 @@ std::ostream &operator<<(std::ostream &os, const block_t &block) {
     for (const std::uint32_t byte: block.bytes) {
         os << std::hex << byte << " ";
     }
+    if (block.bytes.empty()) os << "none";
     os << "\n";
     os << "transactions: ";
     for (const transaction_t &transaction: block.transactions) {
         os << std::dec << transaction << " ";
     }
+    if (block.transactions.empty()) os << "none";
     os << "\n";
     os << "timestamp: " << block.timestamp << "\n";
     os << "hash_prev: " << block.hash_prev << "\n";
