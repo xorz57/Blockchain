@@ -32,7 +32,7 @@ std::vector<transaction_t> generate_random_transactions() {
 }
 
 int main() {
-    auto blockchain = blockchain_t(4);
+    auto blockchain = blockchain_t(5);
 
     std::cout << blockchain.blocks.front() << std::endl;
 
