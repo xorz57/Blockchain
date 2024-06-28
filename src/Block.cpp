@@ -10,17 +10,17 @@
 #include <thread>
 #include <vector>
 
-block_t::block_t(std::uint32_t index, std::vector<transaction_t> transactions, std::string hash_prev)
+block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> bytes, std::string hash_prev)
     : index(index),
-      transactions(std::move(transactions)),
+      bytes(std::move(bytes)),
       hash_prev(std::move(hash_prev)) {
     timestamp = std::to_string(std::time(nullptr));
     hash_curr = hash();
 }
 
-block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> bytes, std::string hash_prev)
+block_t::block_t(std::uint32_t index, std::vector<transaction_t> transactions, std::string hash_prev)
     : index(index),
-      bytes(std::move(bytes)),
+      transactions(std::move(transactions)),
       hash_prev(std::move(hash_prev)) {
     timestamp = std::to_string(std::time(nullptr));
     hash_curr = hash();
