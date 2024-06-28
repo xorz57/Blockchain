@@ -50,7 +50,7 @@ std::string block_t::hash() const {
 }
 
 void block_t::mine(std::uint32_t difficulty) {
-    std::cout << color::basic::yellow << "mining block #" << index << color::reset << std::endl;
+    std::cout << color::bright::yellow << "mining block #" << index << color::reset << std::endl;
 
     bool found = false;
     std::mutex mutex;
@@ -89,25 +89,28 @@ void block_t::mine(std::uint32_t difficulty) {
     int minutes = std::chrono::duration_cast<std::chrono::minutes>(duration).count() % 60;
     int seconds = std::chrono::duration_cast<std::chrono::seconds>(duration).count() % 60;
 
-    std::cout << color::basic::green;
+    std::cout << color::bright::green;
     std::cout << std::format("mined block #{} {} in {} hours {} minutes {} seconds", index, hash_curr, hours, minutes, seconds);
     std::cout << color::reset << std::endl;
 }
 
 std::ostream &operator<<(std::ostream &os, const block_t &block) {
+    os << color::bright::blue;
     os << "index: " << block.index << "\n";
     os << "nonce: " << block.nonce << "\n";
     os << "bytes: \n";
     for (const std::uint32_t byte: block.bytes) {
         os << std::hex << byte << " ";
     }
-    os << std::dec;
+    os << "\n";
     os << "transactions: \n";
     for (const transaction_t &transaction: block.transactions) {
-        os << transaction << "\n";
+        os << std::dec << transaction << " ";
     }
+    os << "\n";
     os << "timestamp: " << block.timestamp << "\n";
     os << "hash_prev: " << block.hash_prev << "\n";
-    os << "hash_curr: " << block.hash_curr << "\n";
+    os << "hash_curr: " << block.hash_curr;
+    os << color::reset;
     return os;
 }
