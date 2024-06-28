@@ -37,14 +37,13 @@ block_t::block_t(std::uint32_t index, std::vector<transaction_t> transactions, s
 
 std::string block_t::hash() const {
     std::ostringstream oss;
-    oss << index << nonce;
+    oss << index << nonce << timestamp << hash_prev;
     for (const auto &byte: bytes) {
         oss << byte;
     }
     for (const auto &transaction: transactions) {
         oss << transaction;
     }
-    oss << timestamp << hash_prev;
     std::string buffer = oss.str();
     return cryptography::sha256(buffer);
 }
