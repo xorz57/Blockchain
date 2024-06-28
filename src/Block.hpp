@@ -1,10 +1,13 @@
 #pragma once
 
+#include "Transaction.hpp"
+
 #include <cstdint>
 #include <string>
 #include <vector>
 
 struct block_t {
+    block_t(std::uint32_t index, std::vector<transaction_t> transactions, std::string hash_prev);
     block_t(std::uint32_t index, std::vector<std::uint8_t> data, std::string hash_prev);
 
     std::string hash() const;
@@ -14,6 +17,7 @@ struct block_t {
     std::uint32_t nonce = 0;
     std::uint32_t index = 0;
     std::vector<std::uint8_t> data;
+    std::vector<transaction_t> transactions;
     std::string hash_prev;
     std::string hash_curr;
 };

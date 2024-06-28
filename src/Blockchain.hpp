@@ -8,7 +8,7 @@
 struct blockchain_t {
     explicit blockchain_t(std::uint32_t difficulty);
 
-    void push(block_t &&block);
+    void push(const block_t &block);
 
     bool is_valid() const;
 

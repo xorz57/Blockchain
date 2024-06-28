@@ -2,13 +2,18 @@
 #include "Blockchain.hpp"
 #include "Color.hpp"
 
-#include <iostream>
-
 int main() {
-    blockchain_t blockchain(6);
+    auto blockchain = blockchain_t(4);
 
     while (blockchain.is_valid()) {
-        blockchain.push(block_t(blockchain.blocks.back().index + 1, std::vector<std::uint8_t>(), blockchain.blocks.back().hash_curr));
+        auto index = blockchain.blocks.back().index + 1;
+        auto data = std::vector<std::uint8_t>{'x', 'o', 'r', 'z', '5', '7', '\0'};
+        auto hash_prev = blockchain.blocks.back().hash_curr;
+
+        auto block = block_t(index, data, hash_prev);
+
+        block.mine(blockchain.difficulty);
+        blockchain.push(block);
     }
 
     return 0;

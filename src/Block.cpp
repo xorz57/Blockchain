@@ -10,6 +10,14 @@
 #include <thread>
 #include <vector>
 
+block_t::block_t(std::uint32_t index, std::vector<transaction_t> transactions, std::string hash_prev)
+    : index(index),
+      transactions(std::move(transactions)),
+      hash_prev(std::move(hash_prev)) {
+    timestamp = std::to_string(std::time(nullptr));
+    hash_curr = hash();
+}
+
 block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> data, std::string hash_prev)
     : index(index),
       data(std::move(data)),
@@ -23,6 +31,9 @@ std::string block_t::hash() const {
     oss << timestamp << nonce << index << hash_prev;
     for (const auto &byte: data) {
         oss << byte;
+    }
+    for (const auto &transaction: transactions) {
+        oss << transaction;
     }
     std::string buffer = oss.str();
     return cryptography::sha256(buffer);

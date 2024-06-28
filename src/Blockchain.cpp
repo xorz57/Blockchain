@@ -4,8 +4,7 @@ blockchain_t::blockchain_t(std::uint32_t difficulty) : difficulty(difficulty) {
     blocks.emplace_back(0, std::vector<std::uint8_t>(), "000000000000000000000000000000000000000000000000000000000000000");
 }
 
-void blockchain_t::push(block_t &&block) {
-    block.mine(difficulty);
+void blockchain_t::push(const block_t &block) {
     blocks.push_back(block);
 }
 
