@@ -3,7 +3,7 @@
 #include "Color.hpp"
 
 int main() {
-    auto blockchain = blockchain_t(4);
+    auto blockchain = blockchain_t(6);
 
     while (blockchain.is_valid()) {
         auto index = blockchain.blocks.back().index + 1;
