@@ -100,13 +100,13 @@ std::ostream &operator<<(std::ostream &os, const block_t &block) {
     os << "nonce: " << block.nonce << "\n";
     os << "bytes: ";
     for (const std::uint32_t byte: block.bytes) {
-        os << std::hex << byte << " ";
+        os << std::hex << byte << std::dec << " ";
     }
     if (block.bytes.empty()) os << "none";
     os << "\n";
     os << "transactions: ";
     for (const transaction_t &transaction: block.transactions) {
-        os << std::dec << transaction << " ";
+        os << transaction << " ";
     }
     if (block.transactions.empty()) os << "none";
     os << "\n";
