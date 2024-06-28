@@ -98,12 +98,12 @@ std::ostream &operator<<(std::ostream &os, const block_t &block) {
     os << color::bright::blue;
     os << "index: " << block.index << "\n";
     os << "nonce: " << block.nonce << "\n";
-    os << "bytes: \n";
+    os << "bytes: ";
     for (const std::uint32_t byte: block.bytes) {
         os << std::hex << byte << " ";
     }
     os << "\n";
-    os << "transactions: \n";
+    os << "transactions: ";
     for (const transaction_t &transaction: block.transactions) {
         os << std::dec << transaction << " ";
     }
