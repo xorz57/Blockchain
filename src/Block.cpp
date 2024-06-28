@@ -18,9 +18,9 @@ block_t::block_t(std::uint32_t index, std::vector<transaction_t> transactions, s
     hash_curr = hash();
 }
 
-block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> data, std::string hash_prev)
+block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> bytes, std::string hash_prev)
     : index(index),
-      data(std::move(data)),
+      bytes(std::move(bytes)),
       hash_prev(std::move(hash_prev)) {
     timestamp = std::to_string(std::time(nullptr));
     hash_curr = hash();
@@ -29,7 +29,7 @@ block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> data, std::strin
 std::string block_t::hash() const {
     std::ostringstream oss;
     oss << timestamp << nonce << index << hash_prev;
-    for (const auto &byte: data) {
+    for (const auto &byte: bytes) {
         oss << byte;
     }
     for (const auto &transaction: transactions) {
