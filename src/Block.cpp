@@ -39,10 +39,10 @@ block_t::block_t(std::uint32_t index, std::vector<transaction_t> transactions, s
 std::string block_t::hash() const {
     std::ostringstream oss;
     oss << index << nonce;
-    for (const std::uint32_t byte: bytes) {
-        oss << byte;
+    for (const auto &byte: bytes) {
+        oss << static_cast<std::uint32_t>(byte);
     }
-    for (const transaction_t &transaction: transactions) {
+    for (const auto &transaction: transactions) {
         oss << transaction;
     }
     oss << timestamp << hash_prev;
@@ -100,13 +100,13 @@ std::ostream &operator<<(std::ostream &os, const block_t &block) {
     os << "index: " << block.index << "\n";
     os << "nonce: " << block.nonce << "\n";
     os << "bytes: ";
-    for (const std::uint32_t byte: block.bytes) {
-        os << std::hex << std::hex << std::setw(2) << std::setfill('0') << byte << std::dec << " ";
+    for (const auto &byte: block.bytes) {
+        os << std::hex << std::hex << std::setw(2) << std::setfill('0') << static_cast<std::uint32_t>(byte) << std::dec << " ";
     }
     if (block.bytes.empty()) os << "none";
     os << "\n";
     os << "transactions: ";
-    for (const transaction_t &transaction: block.transactions) {
+    for (const auto &transaction: block.transactions) {
         os << transaction << " ";
     }
     if (block.transactions.empty()) os << "none";
