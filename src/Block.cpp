@@ -4,6 +4,7 @@
 
 #include <ctime>
 #include <format>
+#include <iomanip>
 #include <iostream>
 #include <mutex>
 #include <sstream>
@@ -100,7 +101,7 @@ std::ostream &operator<<(std::ostream &os, const block_t &block) {
     os << "nonce: " << block.nonce << "\n";
     os << "bytes: ";
     for (const std::uint32_t byte: block.bytes) {
-        os << std::hex << byte << std::dec << " ";
+        os << std::hex << std::hex << std::setw(2) << std::setfill('0') << byte << std::dec << " ";
     }
     if (block.bytes.empty()) os << "none";
     os << "\n";
