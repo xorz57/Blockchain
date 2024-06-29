@@ -11,6 +11,7 @@ struct block_t {
     block_t(std::uint32_t index, std::vector<std::uint8_t> bytes, std::vector<transaction_t> transactions, std::string hash_prev);
     block_t(std::uint32_t index, std::vector<transaction_t> transactions, std::string hash_prev);
 
+    std::string merkle_root_hash(const std::vector<transaction_t> &transactions) const;
     std::string hash() const;
     void mine(std::uint32_t difficulty);
 

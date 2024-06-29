@@ -36,15 +36,40 @@ block_t::block_t(std::uint32_t index, std::vector<transaction_t> transactions, s
     hash_curr = hash();
 }
 
+std::string block_t::merkle_root_hash(const std::vector<transaction_t> &transactions) const {
+    if (transactions.empty()) {
+        return "";
+    }
+
+    std::vector<std::string> merkle;
+    for (const auto &transaction: transactions) {
+        std::ostringstream oss;
+        oss << transaction;
+        merkle.push_back(cryptography::sha256(oss.str()));
+    }
+
+    while (merkle.size() > 1) {
+        if (merkle.size() % 2 != 0) {
+            merkle.push_back(merkle.back());
+        }
+
+        std::vector<std::string> new_merkle;
+        for (size_t i = 0; i < merkle.size(); i += 2) {
+            new_merkle.push_back(cryptography::sha256(merkle[i] + merkle[i + 1]));
+        }
+        merkle = new_merkle;
+    }
+
+    return merkle.front();
+}
+
 std::string block_t::hash() const {
     std::ostringstream oss;
     oss << index << nonce;
     for (const auto &byte: bytes) {
         oss << static_cast<std::uint32_t>(byte);
     }
-    for (const auto &transaction: transactions) {
-        oss << transaction;
-    }
+    oss << merkle_root_hash(transactions);
     oss << timestamp << hash_prev;
     std::string buffer = oss.str();
     return cryptography::sha256(buffer);
