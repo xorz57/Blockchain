@@ -13,7 +13,7 @@ bool blockchain_t::is_valid() const {
         const block_t &block_curr = blocks[i];
         const block_t &block_prev = blocks[i - 1];
 
-        if (block_curr.hash_curr != block_curr.hash()) {
+        if (block_curr.hash_curr != block_curr.calculate_hash()) {
             return false;
         }
 
