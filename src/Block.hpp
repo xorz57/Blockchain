@@ -5,6 +5,8 @@
 #include <vector>
 
 struct block_header_t {
+    block_header_t() = default;
+
     std::uint32_t nonce = 0;
     std::string timestamp;
     std::string hash_prev;
@@ -12,6 +14,7 @@ struct block_header_t {
 };
 
 struct block_t {
+    block_t() = default;
     block_t(const std::string &hash_prev, std::vector<std::uint8_t> bytes);
 
     std::string hash() const;
