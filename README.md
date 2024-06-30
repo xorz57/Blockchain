@@ -3,7 +3,6 @@
 ## Dependencies
 
 - [openssl](https://github.com/openssl/openssl)
-- [rapidjson](https://github.com/Tencent/rapidjson)
 
 ## How to Build
 
