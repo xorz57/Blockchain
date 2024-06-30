@@ -10,7 +10,7 @@
 int main() {
     auto blockchain = blockchain_t(6);
 
-    std::cout << blockchain.blocks.front() << std::endl;
+    std::cout << blockchain.blocks.front().serialize().dump(4) << std::endl;
 
     while (blockchain.is_valid()) {
         const std::vector<std::uint8_t> bytes;
@@ -19,7 +19,7 @@ int main() {
 
         block.mine(blockchain.difficulty);
 
-        std::cout << block << std::endl;
+        std::cout << block.serialize().dump(4) << std::endl;
 
         blockchain.blocks.push_back(block);
     }

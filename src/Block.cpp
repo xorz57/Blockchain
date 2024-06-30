@@ -71,17 +71,38 @@ void block_t::mine(std::uint32_t difficulty) {
     std::cout << color::reset << std::endl;
 }
 
-std::ostream &operator<<(std::ostream &os, const block_t &block) {
-    os << color::bright::blue;
-    os << "nonce: " << block.header.nonce << "\n";
-    os << "timestamp: " << block.header.timestamp << "\n";
-    os << "hash_prev: " << block.header.hash_prev << "\n";
-    os << "hash_curr: " << block.header.hash_curr << "\n";
-    os << "bytes: ";
-    for (const auto &byte: block.bytes) {
-        os << std::hex << std::setw(2) << std::setfill('0') << static_cast<std::uint32_t>(byte) << std::dec << " ";
+nlohmann::json block_t::serialize() const {
+    nlohmann::json serialized_block;
+
+    serialized_block["nonce"] = header.nonce;
+    serialized_block["timestamp"] = header.timestamp;
+    serialized_block["hash_prev"] = header.hash_prev;
+    serialized_block["hash_curr"] = header.hash_curr;
+
+    nlohmann::json serialized_bytes;
+    for (const auto &byte: bytes) {
+        std::ostringstream oss;
+        oss << std::hex << std::setw(2) << std::setfill('0') << static_cast<std::uint32_t>(byte);
+        std::string value = oss.str();
+        serialized_bytes.push_back(value);
     }
-    if (block.bytes.empty()) os << "none";
-    os << color::reset;
-    return os;
+    serialized_block["bytes"] = serialized_bytes;
+
+    return serialized_block;
+}
+
+void block_t::unserialize(const nlohmann::json &data) {
+    header.nonce = data["nonce"].get<std::uint32_t>();
+    header.timestamp = data["timestamp"].get<std::string>();
+    header.hash_prev = data["hash_prev"].get<std::string>();
+    header.hash_curr = data["hash_curr"].get<std::string>();
+
+    nlohmann::json serialized_bytes = data["bytes"];
+    bytes.clear();
+    for (const auto &byte: serialized_bytes) {
+        std::istringstream iss(byte.get<std::string>());
+        std::uint32_t value;
+        iss >> std::hex >> value;
+        bytes.push_back(static_cast<std::uint8_t>(value));
+    }
 }

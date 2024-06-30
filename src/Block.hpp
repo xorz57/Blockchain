@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include <nlohmann/json.hpp>
+
 struct block_header_t {
     block_header_t() = default;
 
@@ -20,8 +22,9 @@ struct block_t {
     std::string hash() const;
     void mine(std::uint32_t difficulty);
 
+    nlohmann::json serialize() const;
+    void unserialize(const nlohmann::json &data);
+
     block_header_t header;
     std::vector<std::uint8_t> bytes;
 };
-
-std::ostream &operator<<(std::ostream &os, const block_t &block);
