@@ -17,7 +17,7 @@ block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> bytes, std::vect
       transactions(std::move(transactions)),
       hash_prev(std::move(hash_prev)) {
     timestamp = std::to_string(std::time(nullptr));
-    hash_curr = calculate_hash();
+    hash_curr = hash();
 }
 
 std::string block_t::calculate_merkle_root(const std::vector<transaction_t> &transactions) const {
@@ -47,7 +47,7 @@ std::string block_t::calculate_merkle_root(const std::vector<transaction_t> &tra
     return hashes.front();
 }
 
-std::string block_t::calculate_hash() const {
+std::string block_t::hash() const {
     std::ostringstream oss;
     oss << index << nonce;
     for (const auto &byte: bytes) {
@@ -73,7 +73,7 @@ void block_t::mine(std::uint32_t difficulty) {
             std::unique_lock<std::mutex> lock(mutex);
             if (found) return;
             nonce++;
-            hash_curr = calculate_hash();
+            hash_curr = hash();
             if (hash_curr.substr(0, difficulty) == str) {
                 found = true;
             }
@@ -110,7 +110,7 @@ std::ostream &operator<<(std::ostream &os, const block_t &block) {
     os << "nonce: " << block.nonce << "\n";
     os << "bytes: ";
     for (const auto &byte: block.bytes) {
-        os << std::hex << std::hex << std::setw(2) << std::setfill('0') << static_cast<std::uint32_t>(byte) << std::dec << " ";
+        os << std::hex << std::setw(2) << std::setfill('0') << static_cast<std::uint32_t>(byte) << std::dec << " ";
     }
     if (block.bytes.empty()) os << "none";
     os << "\n";
