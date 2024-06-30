@@ -10,6 +10,7 @@ else()
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 endif()
 
+find_package(nlohmann_json REQUIRED)
 find_package(OpenSSL REQUIRED)
 
 set(SOURCES src/Main.cpp
@@ -18,5 +19,6 @@ set(SOURCES src/Main.cpp
             src/Cryptography.cpp)
 
 add_executable(Blockchain ${SOURCES})
+target_link_libraries(Blockchain PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(Blockchain PRIVATE OpenSSL::SSL)
 target_compile_features(Blockchain PRIVATE cxx_std_20)

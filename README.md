@@ -2,6 +2,7 @@
 
 ## Dependencies
 
+- [json](https://github.com/nlohmann/json)
 - [openssl](https://github.com/openssl/openssl)
 
 ## How to Build
