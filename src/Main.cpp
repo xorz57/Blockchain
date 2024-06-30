@@ -42,8 +42,11 @@ int main() {
         const std::vector<transaction_t> transactions = generate_random_transactions();
         const std::string hash_prev = blockchain.blocks.back().hash_curr;
         block_t block(index, bytes, transactions, hash_prev);
+
         block.mine(blockchain.difficulty);
+
         std::cout << block << std::endl;
+
         blockchain.blocks.push_back(block);
     }
 

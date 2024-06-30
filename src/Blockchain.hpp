@@ -10,6 +10,6 @@ struct blockchain_t {
 
     bool is_valid() const;
 
-    std::vector<block_t> blocks;
     std::uint32_t difficulty;
+    std::vector<block_t> blocks;
 };
