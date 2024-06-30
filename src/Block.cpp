@@ -21,7 +21,7 @@ std::string block_t::hash() const {
     std::ostringstream oss;
     oss << header.nonce;
     for (const auto &byte: bytes) {
-        oss << static_cast<std::uint32_t>(byte);
+        oss << byte;
     }
     oss << header.timestamp << header.hash_prev;
     std::string buffer = oss.str();
