@@ -11,40 +11,12 @@
 #include <thread>
 #include <vector>
 
-block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> bytes, std::vector<transaction_t> transactions, std::string hash_prev)
+block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> bytes, std::string hash_prev)
     : index(index),
       bytes(std::move(bytes)),
-      transactions(std::move(transactions)),
       hash_prev(std::move(hash_prev)) {
     timestamp = std::to_string(std::time(nullptr));
     hash_curr = calculate_hash();
-}
-
-std::string block_t::calculate_merkle_root(const std::vector<transaction_t> &transactions) const {
-    if (transactions.empty()) {
-        return "";
-    }
-
-    std::vector<std::string> hashes;
-    for (const auto &transaction: transactions) {
-        std::ostringstream oss;
-        oss << transaction;
-        hashes.push_back(cryptography::sha256(oss.str()));
-    }
-
-    while (hashes.size() > 1) {
-        if (hashes.size() % 2 != 0) {
-            hashes.push_back(hashes.back());
-        }
-
-        std::vector<std::string> new_hashes;
-        for (size_t i = 0; i < hashes.size(); i += 2) {
-            new_hashes.push_back(cryptography::sha256(hashes[i] + hashes[i + 1]));
-        }
-        hashes = new_hashes;
-    }
-
-    return hashes.front();
 }
 
 std::string block_t::calculate_hash() const {
@@ -53,7 +25,6 @@ std::string block_t::calculate_hash() const {
     for (const auto &byte: bytes) {
         oss << static_cast<std::uint32_t>(byte);
     }
-    oss << calculate_merkle_root(transactions);
     oss << timestamp << hash_prev;
     std::string buffer = oss.str();
     return cryptography::sha256(buffer);
@@ -113,12 +84,6 @@ std::ostream &operator<<(std::ostream &os, const block_t &block) {
         os << std::hex << std::setw(2) << std::setfill('0') << static_cast<std::uint32_t>(byte) << std::dec << " ";
     }
     if (block.bytes.empty()) os << "none";
-    os << "\n";
-    os << "transactions: ";
-    for (const auto &transaction: block.transactions) {
-        os << transaction << " ";
-    }
-    if (block.transactions.empty()) os << "none";
     os << "\n";
     os << "timestamp: " << block.timestamp << "\n";
     os << "hash_prev: " << block.hash_prev << "\n";
