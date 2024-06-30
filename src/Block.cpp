@@ -74,15 +74,14 @@ void block_t::mine(std::uint32_t difficulty) {
 std::ostream &operator<<(std::ostream &os, const block_t &block) {
     os << color::bright::blue;
     os << "nonce: " << block.header.nonce << "\n";
+    os << "timestamp: " << block.header.timestamp << "\n";
+    os << "hash_prev: " << block.header.hash_prev << "\n";
+    os << "hash_curr: " << block.header.hash_curr << "\n";
     os << "bytes: ";
     for (const auto &byte: block.bytes) {
         os << std::hex << std::setw(2) << std::setfill('0') << static_cast<std::uint32_t>(byte) << std::dec << " ";
     }
     if (block.bytes.empty()) os << "none";
-    os << "\n";
-    os << "timestamp: " << block.header.timestamp << "\n";
-    os << "hash_prev: " << block.header.hash_prev << "\n";
-    os << "hash_curr: " << block.header.hash_curr;
     os << color::reset;
     return os;
 }
