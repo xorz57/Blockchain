@@ -11,16 +11,15 @@
 #include <thread>
 #include <vector>
 
-block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> bytes, const std::string &hash_prev) : bytes(std::move(bytes)) {
-    header.index = index;
-    header.hash_prev = hash_prev;
+block_t::block_t(const std::string &hash_prev, std::vector<std::uint8_t> bytes) : bytes(std::move(bytes)) {
     header.timestamp = std::to_string(std::time(nullptr));
+    header.hash_prev = hash_prev;
     header.hash_curr = hash();
 }
 
 std::string block_t::hash() const {
     std::ostringstream oss;
-    oss << header.index << header.nonce;
+    oss << header.nonce;
     for (const auto &byte: bytes) {
         oss << static_cast<std::uint32_t>(byte);
     }
@@ -30,8 +29,6 @@ std::string block_t::hash() const {
 }
 
 void block_t::mine(std::uint32_t difficulty) {
-    std::cout << color::bright::yellow << "mining block #" << header.index << color::reset << std::endl;
-
     bool found = false;
     std::mutex mutex;
     std::string str(difficulty, '0');
@@ -70,13 +67,12 @@ void block_t::mine(std::uint32_t difficulty) {
     int seconds = std::chrono::duration_cast<std::chrono::seconds>(duration).count() % 60;
 
     std::cout << color::bright::green;
-    std::cout << std::format("mined block #{} {} in {}h {}m {}s", header.index, header.hash_curr, hours, minutes, seconds);
+    std::cout << std::format("mined block {} in {}h {}m {}s", header.hash_curr, hours, minutes, seconds);
     std::cout << color::reset << std::endl;
 }
 
 std::ostream &operator<<(std::ostream &os, const block_t &block) {
     os << color::bright::blue;
-    os << "index: " << block.header.index << "\n";
     os << "nonce: " << block.header.nonce << "\n";
     os << "bytes: ";
     for (const auto &byte: block.bytes) {

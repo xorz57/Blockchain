@@ -1,10 +1,9 @@
 #include "Blockchain.hpp"
 
 blockchain_t::blockchain_t(std::uint32_t difficulty) : difficulty(difficulty) {
-    const std::uint32_t index = 0;
-    const std::vector<std::uint8_t> bytes{'x', 'o', 'r', 'z', '5', '7', '\0'};
     const std::string hash_prev = "0000000000000000000000000000000000000000000000000000000000000000";
-    blocks.emplace_back(0, bytes, hash_prev);
+    const std::vector<std::uint8_t> bytes{'x', 'o', 'r', 'z', '5', '7', '\0'};
+    blocks.emplace_back(hash_prev, bytes);
 }
 
 bool blockchain_t::is_valid() const {
