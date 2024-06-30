@@ -11,14 +11,6 @@
 #include <thread>
 #include <vector>
 
-block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> bytes, std::string hash_prev)
-    : index(index),
-      bytes(std::move(bytes)),
-      hash_prev(std::move(hash_prev)) {
-    timestamp = std::to_string(std::time(nullptr));
-    hash_curr = hash();
-}
-
 block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> bytes, std::vector<transaction_t> transactions, std::string hash_prev)
     : index(index),
       bytes(std::move(bytes)),
@@ -28,15 +20,7 @@ block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> bytes, std::vect
     hash_curr = hash();
 }
 
-block_t::block_t(std::uint32_t index, std::vector<transaction_t> transactions, std::string hash_prev)
-    : index(index),
-      transactions(std::move(transactions)),
-      hash_prev(std::move(hash_prev)) {
-    timestamp = std::to_string(std::time(nullptr));
-    hash_curr = hash();
-}
-
-std::string block_t::merkle_root_hash(const std::vector<transaction_t> &transactions) const {
+std::string block_t::calculate_merkle_root(const std::vector<transaction_t> &transactions) const {
     if (transactions.empty()) {
         return "";
     }
@@ -69,7 +53,7 @@ std::string block_t::hash() const {
     for (const auto &byte: bytes) {
         oss << static_cast<std::uint32_t>(byte);
     }
-    oss << merkle_root_hash(transactions);
+    oss << calculate_merkle_root(transactions);
     oss << timestamp << hash_prev;
     std::string buffer = oss.str();
     return cryptography::sha256(buffer);
