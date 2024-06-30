@@ -11,27 +11,26 @@
 #include <thread>
 #include <vector>
 
-block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> bytes, std::string hash_prev)
-    : index(index),
-      bytes(std::move(bytes)),
-      hash_prev(std::move(hash_prev)) {
-    timestamp = std::to_string(std::time(nullptr));
-    hash_curr = calculate_hash();
+block_t::block_t(std::uint32_t index, std::vector<std::uint8_t> bytes, const std::string &hash_prev) : bytes(std::move(bytes)) {
+    header.index = index;
+    header.hash_prev = hash_prev;
+    header.timestamp = std::to_string(std::time(nullptr));
+    header.hash_curr = hash();
 }
 
-std::string block_t::calculate_hash() const {
+std::string block_t::hash() const {
     std::ostringstream oss;
-    oss << index << nonce;
+    oss << header.index << header.nonce;
     for (const auto &byte: bytes) {
         oss << static_cast<std::uint32_t>(byte);
     }
-    oss << timestamp << hash_prev;
+    oss << header.timestamp << header.hash_prev;
     std::string buffer = oss.str();
     return cryptography::sha256(buffer);
 }
 
 void block_t::mine(std::uint32_t difficulty) {
-    std::cout << color::bright::yellow << "mining block #" << index << color::reset << std::endl;
+    std::cout << color::bright::yellow << "mining block #" << header.index << color::reset << std::endl;
 
     bool found = false;
     std::mutex mutex;
@@ -43,9 +42,9 @@ void block_t::mine(std::uint32_t difficulty) {
         while (!found) {
             std::unique_lock<std::mutex> lock(mutex);
             if (found) return;
-            nonce++;
-            hash_curr = calculate_hash();
-            if (hash_curr.substr(0, difficulty) == str) {
+            header.nonce++;
+            header.hash_curr = hash();
+            if (header.hash_curr.substr(0, difficulty) == str) {
                 found = true;
             }
         }
@@ -71,23 +70,23 @@ void block_t::mine(std::uint32_t difficulty) {
     int seconds = std::chrono::duration_cast<std::chrono::seconds>(duration).count() % 60;
 
     std::cout << color::bright::green;
-    std::cout << std::format("mined block #{} {} in {}h {}m {}s", index, hash_curr, hours, minutes, seconds);
+    std::cout << std::format("mined block #{} {} in {}h {}m {}s", header.index, header.hash_curr, hours, minutes, seconds);
     std::cout << color::reset << std::endl;
 }
 
 std::ostream &operator<<(std::ostream &os, const block_t &block) {
     os << color::bright::blue;
-    os << "index: " << block.index << "\n";
-    os << "nonce: " << block.nonce << "\n";
+    os << "index: " << block.header.index << "\n";
+    os << "nonce: " << block.header.nonce << "\n";
     os << "bytes: ";
     for (const auto &byte: block.bytes) {
         os << std::hex << std::setw(2) << std::setfill('0') << static_cast<std::uint32_t>(byte) << std::dec << " ";
     }
     if (block.bytes.empty()) os << "none";
     os << "\n";
-    os << "timestamp: " << block.timestamp << "\n";
-    os << "hash_prev: " << block.hash_prev << "\n";
-    os << "hash_curr: " << block.hash_curr;
+    os << "timestamp: " << block.header.timestamp << "\n";
+    os << "hash_prev: " << block.header.hash_prev << "\n";
+    os << "hash_curr: " << block.header.hash_curr;
     os << color::reset;
     return os;
 }

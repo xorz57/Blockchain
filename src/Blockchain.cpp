@@ -12,11 +12,11 @@ bool blockchain_t::is_valid() const {
         const block_t &block_curr = blocks[i];
         const block_t &block_prev = blocks[i - 1];
 
-        if (block_curr.hash_curr != block_curr.calculate_hash()) {
+        if (block_curr.header.hash_curr != block_curr.hash()) {
             return false;
         }
 
-        if (block_curr.hash_prev != block_prev.hash_curr) {
+        if (block_curr.header.hash_prev != block_prev.header.hash_curr) {
             return false;
         }
     }
