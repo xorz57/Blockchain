@@ -8,7 +8,7 @@
 #include <vector>
 
 int main() {
-    auto blockchain = blockchain_t(4);
+    auto blockchain = blockchain_t(6);
 
     std::cout << blockchain.blocks.front() << std::endl;
 
