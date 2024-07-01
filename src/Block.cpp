@@ -3,7 +3,6 @@
 #include "Cryptography.hpp"
 
 #include <ctime>
-#include <format>
 #include <iomanip>
 #include <iostream>
 #include <mutex>
@@ -66,9 +65,12 @@ void block_t::mine(std::uint32_t difficulty) {
     int minutes = std::chrono::duration_cast<std::chrono::minutes>(duration).count() % 60;
     int seconds = std::chrono::duration_cast<std::chrono::seconds>(duration).count() % 60;
 
-    std::cout << color::bright::green;
-    std::cout << std::format("mined block {} in {}h {}m {}s", header.hash_curr, hours, minutes, seconds);
-    std::cout << color::reset << std::endl;
+    std::cout << color::bright::green
+              << "mined block " << header.hash_curr << " in "
+              << std::setfill('0') << std::setw(2) << hours << "h "
+              << std::setw(2) << minutes << "m "
+              << std::setw(2) << seconds << "s"
+              << color::reset << std::endl;
 }
 
 nlohmann::json block_t::serialize() const {
