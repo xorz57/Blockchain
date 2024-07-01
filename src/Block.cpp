@@ -61,9 +61,9 @@ void block_t::mine(std::uint32_t difficulty) {
 
     std::chrono::duration<double> duration = t1 - t0;
 
-    int hours = std::chrono::duration_cast<std::chrono::hours>(duration).count();
-    int minutes = std::chrono::duration_cast<std::chrono::minutes>(duration).count() % 60;
-    int seconds = std::chrono::duration_cast<std::chrono::seconds>(duration).count() % 60;
+    const std::uint32_t hours = std::chrono::duration_cast<std::chrono::hours>(duration).count();
+    const std::uint32_t minutes = std::chrono::duration_cast<std::chrono::minutes>(duration).count() % 60;
+    const std::uint32_t seconds = std::chrono::duration_cast<std::chrono::seconds>(duration).count() % 60;
 
     std::cout << color::bright::green
               << "mined block " << header.hash_curr << " in "
