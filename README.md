@@ -1,5 +1,7 @@
 # Blockchain
 
+[![Build](https://github.com/xorz57/Blockchain/actions/workflows/Build.yml/badge.svg)](https://github.com/xorz57/Blockchain/actions/workflows/Build.yml)
+
 ## Dependencies
 
 - [json](https://github.com/nlohmann/json)
