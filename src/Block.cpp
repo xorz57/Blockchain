@@ -1,5 +1,4 @@
 #include "Block.hpp"
-#include "Color.hpp"
 #include "Cryptography.hpp"
 
 #include <ctime>
@@ -30,9 +29,9 @@ std::string block_t::hash() const {
 void block_t::mine(std::uint32_t difficulty) {
     bool found = false;
     std::mutex mutex;
-    std::string str(difficulty, '0');
+    const std::string str(difficulty, '0');
 
-    auto t0 = std::chrono::steady_clock::now();
+    const auto t0 = std::chrono::steady_clock::now();
 
     auto mining_thread = [&](int thread_id) {
         while (!found) {
@@ -57,20 +56,19 @@ void block_t::mine(std::uint32_t difficulty) {
         }
     }
 
-    auto t1 = std::chrono::steady_clock::now();
+    const auto t1 = std::chrono::steady_clock::now();
 
-    std::chrono::duration<double> duration = t1 - t0;
+    const std::chrono::duration<double> duration = t1 - t0;
 
     const std::uint32_t hours = std::chrono::duration_cast<std::chrono::hours>(duration).count();
     const std::uint32_t minutes = std::chrono::duration_cast<std::chrono::minutes>(duration).count() % 60;
     const std::uint32_t seconds = std::chrono::duration_cast<std::chrono::seconds>(duration).count() % 60;
 
-    std::cout << color::bright::green
-              << "mined block " << header.hash_curr << " in "
+    std::cout << "mined block " << header.hash_curr << " in "
               << std::setfill('0') << std::setw(2) << hours << "h "
               << std::setw(2) << minutes << "m "
               << std::setw(2) << seconds << "s"
-              << color::reset << std::endl;
+              << std::endl;
 }
 
 nlohmann::json block_t::serialize() const {
