@@ -19,10 +19,10 @@ struct block_t {
     block_t() = default;
     block_t(const std::string &hash_prev, std::vector<std::uint8_t> bytes);
 
-    std::string hash() const;
+    [[nodiscard]] std::string hash() const;
     void mine(std::uint32_t difficulty);
 
-    nlohmann::json serialize() const;
+    [[nodiscard]] nlohmann::json serialize() const;
     void unserialize(const nlohmann::json &data);
 
     block_header_t header;
